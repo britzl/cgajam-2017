@@ -1,0 +1,11 @@
+local rs = require "render.settings"
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+end
+
+function on_input(self, action_id, action)
+	local camera_pos = go.get_position("camera")
+	
+	go.set_position(vmath.vector3(action.screen_x / rs.ZOOM, camera_pos.y + action.screen_y / rs.ZOOM, 0))
+end

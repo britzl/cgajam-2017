@@ -1,0 +1,79 @@
+local flow = require "ludobits.m.flow"
+
+
+function init(self)
+	msg.post("@render:", "clear_color", { color = vmath.vector4(0x55/0xff, 0xff/0xff, 0x55/0xff, 1) })
+	
+	flow(function()
+		while true do
+			local level = 1
+			flow.load("#menuproxy")
+			flow.load("#gameproxy")
+			msg.post("menu:/menu", "show")
+			flow.until_message(hash("menu_visible"))
+			
+			msg.post(".", "acquire_input_focus")
+			msg.post("game:/level", "createlevel", { level = level })
+			flow.until_message(hash("playing_level"))
+			flow.parallel(function()
+				msg.post("menu:/menu", "hide")
+				flow.until_message(hash("menu_hidden"))
+				flow.unload("#menuproxy")
+			end)
+
+			while true do
+				local message_id = flow.until_message(hash("level_failed"), hash("level_completed"))
+				if message_id == hash("level_failed") then
+					msg.post("#gameproxy", "set_time_step", { factor = 0, mode = 0 })
+					msg.post(".", "release_input_focus")
+					flow.load("#levelfailedproxy")
+					msg.post("levelfailed:/levelfailed", "show")
+					flow.delay(4)
+					msg.post("levelfailed:/levelfailed", "hide")
+					flow.unload("#levelfailedproxy")
+					msg.post("#gameproxy", "set_time_step", { factor = 1, mode = 0 })
+					flow.unload("#gameproxy")
+					break
+				elseif message_id == hash("level_completed") then
+					msg.post(".", "release_input_focus")
+					flow.delay(1)
+					flow.load("#levelcompletedproxy")
+					msg.post("levelcompleted:/levelcompleted", "show")
+					flow.delay(4)
+					msg.post("levelcompleted:/levelcompleted", "hide")
+					flow.unload("#levelcompletedproxy")
+					flow.unload("#gameproxy")
+					flow.load("#gameproxy")
+					level = level + 1
+					msg.post("game:/level", "createlevel", { level = level })
+					msg.post(".", "acquire_input_focus")
+				end
+			end
+		end
+	end)
+end
+
+function update(self, dt)
+	flow.update(dt)
+end
+
+function on_message(self, message_id, message, sender)
+	flow.on_message(message_id, message, sender)
+	--print(message_id)
+	--[[if message_id == hash("proxy_loaded") then
+		msg.post(sender, "enable")
+	elseif message_id == hash("proxy_unloaded") then
+	elseif message_id == hash("pulling") then
+		msg.post("menu:/menu", "hide")
+	end--]]
+end
+
+function on_input(self, action_id, action)
+	-- Add input-handling code here
+	-- Remove this function if not needed
+end
+
+function on_reload(self)
+	-- Add reload-handling code here
+	-- Remove this function if not needed
+end

@@ -1,0 +1,49 @@
+[project]
+title = Zling
+version = 0.1
+dependencies = https://github.com/britzl/ludobits/archive/master.zip
+
+[bootstrap]
+main_collection = /controller/controller.collectionc
+render = /render/gb.renderc
+
+[input]
+game_binding = /input/game.input_bindingc
+
+[display]
+width = 640
+height = 1136
+
+[physics]
+scale = 0.02
+debug = 0
+max_collisions = 200
+max_contacts = 100
+gravity_y = -1000.0
+
+[script]
+shared_state = 1
+
+[ios]
+bundle_identifier = com.britzl.zling
+
+[android]
+package = com.britzl.zling
+
+[osx]
+bundle_identifier = com.britzl.zling
+
+[graphics]
+default_texture_min_filter = nearest
+default_texture_mag_filter = nearest
+
+[factory]
+max_count = 1000
+
+[sprite]
+max_count = 500
+
+[particle_fx]
+max_count = 300
+max_particle_count = 1000
+

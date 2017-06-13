@@ -1,0 +1,44 @@
+local SPACING = 120
+
+local function rotation45()
+	return vmath.quat_rotation_z(math.rad(math.random(-45, 45)))
+end
+
+local function no_rotation()
+	return nil
+end
+
+local function anywhere()
+	return vmath.vector3(math.random(30, 130), math.random(-15, 15), 0)
+end
+
+local function center()
+	return vmath.vector3(80, math.random(-15, 15), 0)
+end
+
+
+local PEG = { url = "factories#peg", rotation = no_rotation, position = anywhere }
+local RAILPEG = { url = "factories#railpeg", rotation = rotation45, position = center }
+local CRUSHER = { url = "factories#crusher", rotation = rotation45, position = center }
+
+local FACTORIES = {
+	PEG,
+	PEG,
+	PEG,
+	RAILPEG,
+	CRUSHER,
+}
+
+function init(self)
+	math.randomseed(os.time())
+end
+
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("createlevel") then
+		for i=1,15 do
+			local thing = FACTORIES[math.random(#FACTORIES)]
+			collectionfactory.create(thing.url, vmath.vector3(0, SPACING + i * SPACING, 0) + thing.position(), thing.rotation())
+		end
+	end
+end

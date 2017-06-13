@@ -1,0 +1,35 @@
+local transitions = require "utils.transitions"
+
+local function show(self, cb)
+	transitions.slide_up(self.text, 0.8, cb)
+	transitions.slide_right(self.well, 0.4)
+	transitions.slide_left(self.done, 0.4)
+end
+
+local function hide(self, cb)
+	transitions.slide_down(self.text, 0.8, cb)
+	transitions.slide_left(self.well, 0.4)
+	transitions.slide_right(self.done, 0.4)
+end
+
+function init(self)
+	self.text = gui.get_node("text")
+	self.well = gui.get_node("well")
+	self.done = gui.get_node("done")
+	
+	gui.set_position(self.text, gui.get_position(self.text) - transitions.OUT_UP_DOWN)
+	gui.set_position(self.well, gui.get_position(self.well) - transitions.OUT_LEFT_RIGHT)
+	gui.set_position(self.done, gui.get_position(self.done) + transitions.OUT_LEFT_RIGHT)
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("show") then
+		show(self, function()
+			msg.post(sender, "levelcompleted_visible")
+		end)
+	elseif message_id == hash("hide") then
+		hide(self, function()
+			msg.post(sender, "levelcompleted_hidden")
+		end)
+	end
+end

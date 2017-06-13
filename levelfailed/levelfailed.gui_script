@@ -1,0 +1,35 @@
+local transitions = require "utils.transitions"
+
+local function show(self, cb)
+	transitions.slide_up(self.text, 0.8, cb)
+	transitions.slide_right(self.game, 0.4)
+	transitions.slide_left(self.over, 0.4)
+end
+
+local function hide(self, cb)
+	transitions.slide_down(self.text, 0.8, cb)
+	transitions.slide_left(self.game, 0.4)
+	transitions.slide_right(self.over, 0.4)
+end
+
+function init(self)
+	self.text = gui.get_node("text")
+	self.game = gui.get_node("game")
+	self.over = gui.get_node("over")
+	
+	gui.set_position(self.text, gui.get_position(self.text) - transitions.OUT_UP_DOWN)
+	gui.set_position(self.game, gui.get_position(self.game) - transitions.OUT_LEFT_RIGHT)
+	gui.set_position(self.over, gui.get_position(self.over) + transitions.OUT_LEFT_RIGHT)
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("show") then
+		show(self, function()
+			msg.post(sender, "levelfailed_visible")
+		end)
+	elseif message_id == hash("hide") then
+		hide(self, function()
+			msg.post(sender, "levelfailed_hidden")
+		end)
+	end
+end

@@ -1,0 +1,8 @@
+go.property("distance", 60)
+
+function init(self)
+	local pos = go.get_position()
+	local rot = go.get_rotation()
+	local to = pos - vmath.rotate(rot, vmath.vector3(self.distance, 0, 0))
+	go.animate(".", "position", go.PLAYBACK_LOOP_PINGPONG, to, go.EASING_INOUTQUAD, 1.5)
+end

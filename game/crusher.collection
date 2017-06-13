@@ -1,0 +1,50 @@
+name: "default"
+instances {
+  id: "left"
+  prototype: "/game/crusher.go"
+  position {
+    x: -126.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 1.0
+    z: 0.0
+    w: 6.123234E-17
+  }
+  component_properties {
+    id: "script"
+    properties {
+      id: "distance"
+      value: "60.0"
+      type: PROPERTY_TYPE_NUMBER
+    }
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "right"
+  prototype: "/game/crusher.go"
+  position {
+    x: 126.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+scale_along_z: 0

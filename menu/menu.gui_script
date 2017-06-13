@@ -1,0 +1,44 @@
+local transitions = require "utils.transitions"
+
+local function show(self, cb)
+	transitions.slide_right(self.cga)
+	transitions.slide_left(self.jam)
+	transitions.slide_up(self.credits, 1.0, cb)
+	transitions.slide_up(self.instructions, 0.8)
+end
+
+local function hide(self, cb)
+	transitions.slide_left(self.cga)
+	transitions.slide_right(self.jam)
+	transitions.slide_down(self.credits, 1.0, cb)
+	transitions.slide_down(self.instructions, 0.8)
+end
+
+function init(self)
+	self.cga = gui.get_node("cga")
+	self.jam = gui.get_node("jam")
+	self.credits = gui.get_node("credits")
+	self.instructions = gui.get_node("instructions")
+	self.cga_pos = gui.get_position(self.cga)
+	self.jam_pos = gui.get_position(self.jam)
+	self.credits_pos = gui.get_position(self.credits)
+	self.instructions_pos = gui.get_position(self.instructions)
+	
+	-- hide nodes
+	gui.set_position(self.cga, self.cga_pos - transitions.OUT_LEFT_RIGHT)
+	gui.set_position(self.jam, self.jam_pos + transitions.OUT_LEFT_RIGHT)
+	gui.set_position(self.credits, self.credits_pos - transitions.OUT_UP_DOWN)
+	gui.set_position(self.instructions, self.instructions_pos - transitions.OUT_UP_DOWN)
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("hide") then
+		hide(self, function()
+			msg.post(sender, "menu_hidden")
+		end)	
+	elseif message_id == hash("show") then
+		show(self, function()
+			msg.post(sender, "menu_visible")
+		end)	
+	end
+end

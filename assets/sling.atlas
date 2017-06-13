@@ -1,0 +1,65 @@
+images {
+  image: "/assets/images/slingball.png"
+}
+images {
+  image: "/assets/images/peg.png"
+}
+images {
+  image: "/assets/images/wall.png"
+}
+images {
+  image: "/assets/images/shadow.png"
+}
+images {
+  image: "/assets/images/peg_rail.png"
+}
+images {
+  image: "/assets/images/crusher.png"
+}
+images {
+  image: "/assets/images/transparent1px.png"
+}
+images {
+  image: "/assets/images/cga.png"
+}
+images {
+  image: "/assets/images/jam.png"
+}
+images {
+  image: "/assets/images/goal.png"
+}
+images {
+  image: "/assets/images/well.png"
+}
+images {
+  image: "/assets/images/done.png"
+}
+images {
+  image: "/assets/images/game.png"
+}
+images {
+  image: "/assets/images/over.png"
+}
+animations {
+  id: "leftleaf1"
+  images {
+    image: "/assets/images/leaf1.png"
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 60
+  flip_horizontal: 1
+  flip_vertical: 0
+}
+animations {
+  id: "rightleaf1"
+  images {
+    image: "/assets/images/leaf1.png"
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 60
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+margin: 0
+extrude_borders: 2
+inner_padding: 0
