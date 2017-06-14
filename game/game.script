@@ -117,10 +117,12 @@ function on_input(self, action_id, action)
 		if action.pressed then
 			if self.ball_id and self.peg_id then
 				self.pulling = true
+				msg.post("arrow", "enable")
 				post_to_controller("playing_level")
 			end
 		elseif action.released then
 			if self.pulling then
+				msg.post("arrow", "disable")
 				local distance_to_peg = go.get_world_position(self.peg_id) - go.get_world_position()
 				local force = distance_to_peg * 15
 				self.velocity = self.velocity + force
@@ -131,6 +133,18 @@ function on_input(self, action_id, action)
 		end
 		
 		if self.pulling then
+			local ball_pos = go.get_world_position()
+			local peg_pos = go.get_world_position(self.peg_id)
+			local distance = vmath.length(ball_pos - peg_pos)
+			local arrow_pos = vmath.lerp(1.5, ball_pos, peg_pos)
+			arrow_pos.z = -0.5
+			go.set_position(arrow_pos, "arrow")
+			
+			local dx = peg_pos.x - ball_pos.x
+			local dy = peg_pos.y - ball_pos.y
+			local radians = math.atan2(dy, dx)
+			go.set_rotation(vmath.quat_rotation_z(radians), "arrow")
+			
 			local camera_pos = go.get_position("camera")
 			go.set_position(vmath.vector3(action.screen_x / rs.ZOOM, camera_pos.y + action.screen_y / rs.ZOOM, 0))
 		end	

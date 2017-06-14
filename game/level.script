@@ -21,13 +21,38 @@ local PEG = { url = "factories#peg", rotation = no_rotation, position = anywhere
 local RAILPEG = { url = "factories#railpeg", rotation = rotation45, position = center }
 local CRUSHER = { url = "factories#crusher", rotation = rotation45, position = center }
 
-local FACTORIES = {
+local PEGS = {
 	PEG,
 	PEG,
 	PEG,
 	RAILPEG,
+}
+
+
+local DANGERS = {
 	CRUSHER,
 }
+
+local function random_from_list(list)
+	return list[math.random(1, #list)]
+end
+
+
+local function create_level(index)
+	local things = 16
+	local level = {}
+	repeat
+		table.insert(level, random_from_list(PEGS))
+		if math.random(2, things) <= index then
+			table.insert(level, random_from_list(DANGERS))
+		end
+		if math.random(4, things) <= index then
+			table.insert(level, random_from_list(DANGERS))
+		end
+	until #level >= things
+	return level
+end
+
 
 function init(self)
 	math.randomseed(os.time())
@@ -36,9 +61,11 @@ end
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("createlevel") then
-		for i=1,15 do
-			local thing = FACTORIES[math.random(#FACTORIES)]
+		local level = create_level(message.level)
+		for i=1,#level do
+			local thing = level[i]
 			collectionfactory.create(thing.url, vmath.vector3(0, SPACING + i * SPACING, 0) + thing.position(), thing.rotation())
 		end
 	end
+	label.set_text("#levelid", "LEVEL " .. tostring(message.level))
 end

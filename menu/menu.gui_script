@@ -1,13 +1,17 @@
 local transitions = require "utils.transitions"
+local effects = require "utils.effects"
 
 local function show(self, cb)
 	transitions.slide_right(self.cga)
 	transitions.slide_left(self.jam)
 	transitions.slide_up(self.credits, 1.0, cb)
-	transitions.slide_up(self.instructions, 0.8)
+	transitions.slide_up(self.instructions, 0.8, function()
+		effects.blink.start(self.instructions, 1)
+	end)
 end
 
 local function hide(self, cb)
+	effects.blink.stop(self.instructions)
 	transitions.slide_left(self.cga)
 	transitions.slide_right(self.jam)
 	transitions.slide_down(self.credits, 1.0, cb)

@@ -1,6 +1,6 @@
 components {
   id: "script"
-  component: "/game/sling.script"
+  component: "/game/game.script"
   position {
     x: 0.0
     y: 0.0

@@ -40,6 +40,12 @@ images {
 images {
   image: "/assets/images/over.png"
 }
+images {
+  image: "/assets/images/arrow1.png"
+}
+images {
+  image: "/assets/images/arrow2.png"
+}
 animations {
   id: "leftleaf1"
   images {
