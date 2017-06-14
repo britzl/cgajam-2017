@@ -4,7 +4,7 @@ instances {
   prototype: "/game/peg.go"
   position {
     x: 80.0
-    y: 62.639
+    y: 88.818
     z: 0.0
   }
   rotation {
@@ -24,7 +24,7 @@ instances {
   prototype: "/game/ball.go"
   position {
     x: 80.0
-    y: 50.0
+    y: 76.179
     z: 0.0
   }
   rotation {
@@ -2165,7 +2165,7 @@ embedded_instances {
   ""
   position {
     x: 0.0
-    y: -128.0
+    y: -94.0
     z: 0.0
   }
   rotation {
