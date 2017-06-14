@@ -123,7 +123,7 @@ function on_input(self, action_id, action)
 		elseif action.released then
 			if self.pulling then
 				msg.post("arrow", "disable")
-				local distance_to_peg = go.get_position(self.peg_id) - go.get_position()
+				local distance_to_peg = go.get_world_position(self.peg_id) - go.get_world_position()
 				local force = distance_to_peg * 12
 				self.velocity = self.velocity + force
 				self.pulling = false
@@ -133,19 +133,26 @@ function on_input(self, action_id, action)
 		end
 		
 		if self.pulling then
-			local camera_pos = go.get_position("camera")
+			local camera_pos = go.get_world_position("camera")
 			local ball_pos = vmath.vector3(action.screen_x / rs.ZOOM, camera_pos.y + action.screen_y / rs.ZOOM, 0)
-			local peg_pos = go.get_position(self.peg_id)
+			local peg_pos = go.get_world_position(self.peg_id)
 			local diff = ball_pos - peg_pos
 			local direction = vmath.normalize(diff)
 			local max_distance = 75
 			local distance = vmath.length(diff)
+			
+			-- position ball based on sling direction
+			-- limit distance
 			ball_pos = peg_pos + direction * math.min(distance, max_distance)
 			go.set_position(ball_pos)
+			
+			-- position arrow a distance away from the peg, proportional to the
+			-- distance between the peg and the ball
 			local arrow_pos = vmath.lerp(1.5, ball_pos, peg_pos)
 			arrow_pos.z = -0.5
 			go.set_position(arrow_pos, "arrow")
 			
+			-- rotate the arrow
 			local dx = peg_pos.x - ball_pos.x
 			local dy = peg_pos.y - ball_pos.y
 			local radians = math.atan2(dy, dx)
