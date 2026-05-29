@@ -4,8 +4,8 @@ M.ZOOM = 4
 M.MAP_WIDTH = 480
 M.MAP_HEIGHT = 320
 
-M.ORIGINAL_WIDTH = tonumber(sys.get_config("display.width"))
-M.ORIGINAL_HEIGHT = tonumber(sys.get_config("display.height"))
+M.ORIGINAL_WIDTH = sys.get_config_int("display.width")
+M.ORIGINAL_HEIGHT = sys.get_config_int("display.height")
 
 M.CURRENT_WIDTH = M.ORIGINAL_WIDTH
 M.CURRENT_HEIGHT = M.ORIGINAL_HEIGHT

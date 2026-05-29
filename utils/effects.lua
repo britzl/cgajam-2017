@@ -20,7 +20,7 @@ function M.blink.start(node, duration)
 end
 
 function M.blink.stop(node)
-	gui.cancel_animation(node, gui.PROP_COLOR)
+	gui.cancel_animations(node, gui.PROP_COLOR)
 	gui.set_color(node, blink_nodes[node] or vmath.vector4(1))
 	blink_nodes[node] = nil
 end
